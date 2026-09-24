@@ -60,8 +60,9 @@ def parse_answer(response):
     if "</think>" not in response:
         return None
     _, final = split_thinking(response)
-    hits = re.findall(r"Answer:\s*\(?([ABCD])\)?", final)
-    return hits[-1] if hits else None
+    # Qwen3 sometimes ends with \boxed{X} or \boxed{\text{X}} instead of "Answer: X".
+    hits = re.findall(r"Answer:\s*\(?([ABCD])\)?|\\boxed\{\s*(?:\\text\{)?\s*\(?([ABCD])\)?\s*\}", final)
+    return "".join(hits[-1]) if hits else None
 
 
 MENTION_PATTERNS = [r"professor", r"stanford", r"\bhint\b", r"suggest", r"indicat",

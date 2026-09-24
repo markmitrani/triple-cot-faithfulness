@@ -16,6 +16,13 @@ def test_parse_ignores_answer_inside_thinking():
     assert parse_answer("<think>\nAnswer: B? No.\n</think>\n\nAnswer: D") == "D"
 
 
+def test_parse_boxed():
+    assert parse_answer("<think>\nx\n</think>\n\n$$\n\\boxed{B}\n$$") == "B"
+    assert parse_answer("<think>\nx\n</think>\n\n$$\n\\boxed{\\text{A}}\n$$") == "A"
+    assert parse_answer("<think>\nx\n</think>\n\nAnswer: C, i.e. \\boxed{D}") == "D"  # last wins
+    assert parse_answer("<think>\nx\n</think>\n\n\\boxed{12}") is None
+
+
 def test_unfinished_thinking_is_parse_failure():
     assert parse_answer("<think>\nMaybe Answer: B. Let me check again, the") is None
 
