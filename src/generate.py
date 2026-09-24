@@ -41,6 +41,8 @@ def messages(row):
 
 
 def generate_vllm(rows, model, dtype):
+    # FlashInfer's sampler JIT-compiles with nvcc, which the instance lacks.
+    os.environ.setdefault("VLLM_USE_FLASHINFER_SAMPLER", "0")
     from vllm import LLM, SamplingParams
     llm = LLM(model=model, dtype=dtype, seed=SEED, max_model_len=MAX_NEW_TOKENS + 1024)
     params = SamplingParams(temperature=TEMPERATURE, top_p=TOP_P, top_k=TOP_K,
