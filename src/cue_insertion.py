@@ -56,6 +56,9 @@ def split_thinking(response):
 
 
 def parse_answer(response):
+    # Unfinished thinking (e.g. hit the token cap) counts as a parse failure.
+    if "</think>" not in response:
+        return None
     _, final = split_thinking(response)
     hits = re.findall(r"Answer:\s*\(?([ABCD])\)?", final)
     return hits[-1] if hits else None

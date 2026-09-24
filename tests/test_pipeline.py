@@ -16,6 +16,10 @@ def test_parse_ignores_answer_inside_thinking():
     assert parse_answer("<think>\nAnswer: B? No.\n</think>\n\nAnswer: D") == "D"
 
 
+def test_unfinished_thinking_is_parse_failure():
+    assert parse_answer("<think>\nMaybe Answer: B. Let me check again, the") is None
+
+
 def test_mentions_cue():
     assert mentions_cue(BY_KEY[1, "cued"])
     assert not mentions_cue(BY_KEY[2, "cued"])
