@@ -1,0 +1,6 @@
+results/*
+!results/summary.md
+.env
+.venv/
+__pycache__/
+prompts.jsonl
